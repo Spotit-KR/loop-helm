@@ -1,0 +1,80 @@
+nameOverride: "spotit-loop"
+fullnameOverride: "spotit-loop"
+
+replicaCount: 1
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirect-https@kubernetescrd
+    cert-manager.io/cluster-issuer: team-io-kr-letsencrypt-prod
+  hosts:
+    - host: api.loop.team.io.kr
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: spotit-uxlog-tls
+      hosts:
+        - api.loop.team.io.kr
+
+resources:
+    requests:
+      memory: 2Gi
+      cpu: 300m
+
+image:
+  repository: "harbor.homelab.robinjoon.xyz/loop/server"
+  tag: "20260131-14"
+
+imagePullSecrets:
+  - name: "spotit-harbor-secret"
+
+ports:
+  - containerPort: 8080 # 컨테이너 포트 명시
+readinessProbe:
+  httpGet:
+    path: "/"       # 혹은 /health 등 실제 헬스체크 경로
+    port: 8080    # 앱이 사용하는 실제 포트로 변경
+  initialDelaySeconds: 20 # 앱 구동 시간 고려하여 대기 시간 추가
+
+livenessProbe:
+  httpGet:
+    path: "/"       # 혹은 /health 등 실제 헬스체크 경로
+    port: 8080    # 앱이 사용하는 실제 포트로 변경
+  initialDelaySeconds: 20 # 앱 구동 시간 고려하여 대기 시간 추가
+
+autoscaling:
+  enabled: false
+
+service:
+  port: 8080
+
+# Environment variables from Secret
+# Secret 생성 방법: backend-secret.yaml 파일 생성 후 적용
+#
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: backend-secret
+#   namespace: growweek
+# type: Opaque
+# stringData:
+#   SPRING_PROFILES_ACTIVE: "dev"
+#   DB_HOST: ""
+#   DB_PORT: ""
+#   DB_NAME: ""
+#   DB_USERNAME: ""
+#   DB_PASSWORD: ""
+#   JWT_SECRET: ""
+#   JWT_EXPIRATION: "3600000"
+#   GEMINI_API_KEY: ""
+# ---
+#
+# kubectl apply -f backend-secret.yaml
+envFrom:
+  - secretRef:
+      name: backend-secret
