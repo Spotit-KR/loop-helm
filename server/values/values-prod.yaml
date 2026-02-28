@@ -1,5 +1,5 @@
-nameOverride: "spotit-loop"
-fullnameOverride: "spotit-loop"
+nameOverride: "loop-server"
+fullnameOverride: "loop-server"
 
 replicaCount: 1
 
@@ -16,7 +16,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: spotit-uxlog-tls
+    - secretName: loop-server-tls
       hosts:
         - api.loop.team.io.kr
 

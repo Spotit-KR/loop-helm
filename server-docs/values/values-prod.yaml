@@ -1,5 +1,5 @@
-nameOverride: "spotit-loop-docs"
-fullnameOverride: "spotit-loop-docs"
+nameOverride: "loop-server-docs"
+fullnameOverride: "loop-server-docs"
 
 replicaCount: 1
 
@@ -16,7 +16,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: spotit-uxlog-tls
+    - secretName: loop-server-tls
       hosts:
         - doc.api.loop.team.io.kr
 
@@ -26,7 +26,7 @@ resources:
     cpu: 200m
 
 image:
-  repository: "harbor.homelab.robinjoon.xyz/loop/server"
+  repository: "harbor.homelab.robinjoon.xyz/loop/server-docs"
   tag: "20260228-1"
 
 imagePullSecrets:
