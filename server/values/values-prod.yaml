@@ -75,6 +75,4 @@ service:
 # ---
 #
 # kubectl apply -f backend-secret.yaml
-envFrom:
-  - secretRef:
-      name: backend-secret
+envFrom: {}
