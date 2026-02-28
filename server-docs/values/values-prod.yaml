@@ -78,5 +78,5 @@ service:
 envFrom: {}
 
 basicAuth:
-  enabled: true
+  enabled: false
   secretName: "server-docs-basic-auth"
