@@ -21,9 +21,9 @@ ingress:
         - doc.api.loop.team.io.kr
 
 resources:
-    requests:
-      memory: 2Gi
-      cpu: 300m
+  requests:
+    memory: 1Gi
+    cpu: 200m
 
 image:
   repository: "harbor.homelab.robinjoon.xyz/loop/server"
@@ -78,3 +78,7 @@ service:
 envFrom:
   - secretRef:
       name: backend-secret
+
+basicAuth:
+  enabled: true
+  secretName: "server-docs-basic-auth"

@@ -180,3 +180,10 @@ env: []
 #   - configMapRef:
 #       name: my-configmap
 envFrom: []
+
+# Basic authentication for external access via Traefik middleware
+# The secret must be created separately with htpasswd-formatted users
+basicAuth:
+  enabled: false
+  # Name of the externally managed Secret containing htpasswd users
+  secretName: ""

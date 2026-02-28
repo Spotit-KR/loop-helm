@@ -5,7 +5,17 @@ metadata:
   name: {{ include "backend.fullname" . }}
   labels:
     {{- include "backend.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+  {{- $annotations := .Values.ingress.annotations | default dict }}
+  {{- if .Values.basicAuth.enabled }}
+  {{- $middlewareName := printf "%s-%s-basic-auth@kubernetescrd" .Release.Namespace (include "backend.fullname" .) }}
+  {{- $existing := index $annotations "traefik.ingress.kubernetes.io/router.middlewares" | default "" }}
+  {{- if $existing }}
+  {{- $annotations = merge (dict "traefik.ingress.kubernetes.io/router.middlewares" (printf "%s,%s" $existing $middlewareName)) $annotations }}
+  {{- else }}
+  {{- $annotations = merge (dict "traefik.ingress.kubernetes.io/router.middlewares" $middlewareName) $annotations }}
+  {{- end }}
+  {{- end }}
+  {{- with $annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
