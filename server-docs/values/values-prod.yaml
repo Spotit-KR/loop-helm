@@ -33,24 +33,24 @@ imagePullSecrets:
   - name: "loop-harbor-secret"
 
 ports:
-  - containerPort: 8080 # 컨테이너 포트 명시
+  - containerPort: 80 # 컨테이너 포트 명시
 readinessProbe:
   httpGet:
     path: "/"       # 혹은 /health 등 실제 헬스체크 경로
-    port: 8080    # 앱이 사용하는 실제 포트로 변경
+    port: 80    # 앱이 사용하는 실제 포트로 변경
   initialDelaySeconds: 20 # 앱 구동 시간 고려하여 대기 시간 추가
 
 livenessProbe:
   httpGet:
     path: "/"       # 혹은 /health 등 실제 헬스체크 경로
-    port: 8080    # 앱이 사용하는 실제 포트로 변경
+    port: 80    # 앱이 사용하는 실제 포트로 변경
   initialDelaySeconds: 20 # 앱 구동 시간 고려하여 대기 시간 추가
 
 autoscaling:
   enabled: false
 
 service:
-  port: 8080
+  port: 80
 
 # Environment variables from Secret
 # Secret 생성 방법: backend-secret.yaml 파일 생성 후 적용
