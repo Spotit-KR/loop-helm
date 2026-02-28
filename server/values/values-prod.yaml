@@ -30,7 +30,7 @@ image:
   tag: "20260228-14"
 
 imagePullSecrets:
-  - name: "spotit-harbor-secret"
+  - name: "loop-harbor-secret"
 
 ports:
   - containerPort: 8080 # 컨테이너 포트 명시
