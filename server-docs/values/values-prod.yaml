@@ -1,7 +1,7 @@
 nameOverride: "spotit-loop"
 fullnameOverride: "spotit-loop"
 
-replicaCount: 0
+replicaCount: 1
 
 ingress:
   enabled: true
