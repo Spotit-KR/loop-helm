@@ -75,4 +75,10 @@ service:
 # ---
 #
 # kubectl apply -f backend-secret.yaml
-envFrom: {}
+envFrom:
+    - secretRef:
+      name: server-secret
+
+env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: "prod"
