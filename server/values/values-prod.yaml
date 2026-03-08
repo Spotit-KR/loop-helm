@@ -16,7 +16,7 @@ ingress:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: loop-server-tls
+    - secretName: loop-server-tls-2
       hosts:
         - api.loop.team.io.kr
 
