@@ -1,0 +1,45 @@
+{{- if .Values.prometheusIngress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "backend.fullname" . }}-prometheus
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+  {{- $annotations := .Values.ingress.annotations | default dict }}
+  {{- $middlewareName := printf "%s-%s-prometheus-basic-auth@kubernetescrd" .Release.Namespace (include "backend.fullname" .) }}
+  {{- $existing := index $annotations "traefik.ingress.kubernetes.io/router.middlewares" | default "" }}
+  {{- if $existing }}
+  {{- $annotations = merge (dict "traefik.ingress.kubernetes.io/router.middlewares" (printf "%s,%s" $existing $middlewareName)) $annotations }}
+  {{- else }}
+  {{- $annotations = merge (dict "traefik.ingress.kubernetes.io/router.middlewares" $middlewareName) $annotations }}
+  {{- end }}
+  annotations:
+    {{- toYaml $annotations | nindent 4 }}
+spec:
+  {{- with .Values.ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          - path: /actuator/prometheus
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "backend.fullname" $ }}
+                port:
+                  number: {{ $.Values.service.port }}
+    {{- end }}
+{{- end }}

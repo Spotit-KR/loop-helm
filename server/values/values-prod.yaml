@@ -79,6 +79,11 @@ envFrom:
     - secretRef:
         name: server-secret
 
+prometheusIngress:
+  enabled: true
+  basicAuth:
+    secretName: "server-prometheus-basic-auth"
+
 env:
     - name: SPRING_PROFILES_ACTIVE
       value: "prod"

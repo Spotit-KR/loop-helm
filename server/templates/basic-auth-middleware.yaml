@@ -1,0 +1,11 @@
+{{- if .Values.prometheusIngress.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "backend.fullname" . }}-prometheus-basic-auth
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  basicAuth:
+    secret: {{ .Values.prometheusIngress.basicAuth.secretName }}
+{{- end }}
