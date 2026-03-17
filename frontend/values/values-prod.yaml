@@ -51,7 +51,7 @@ service:
   port: 3000
 
 env:
-  - name: API_BASE_URL
+  - name: VITE_GRAPHQL_ENDPOINT
     value: "https://api.loop.team.io.kr"
 
 envFrom: []
