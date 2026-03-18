@@ -52,6 +52,6 @@ service:
 
 env:
   - name: VITE_GRAPHQL_ENDPOINT
-    value: "https://api.loop.team.io.kr"
+    value: "https://api.loop.team.io.kr/graphql"
 
 envFrom: []
