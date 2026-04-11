@@ -27,7 +27,7 @@ resources:
 
 image:
   repository: "harbor.homelab.robinjoon.xyz/loop/server"
-  tag: "20260325-42"
+  tag: "20260412-43"
 
 imagePullSecrets:
   - name: "loop-harbor-secret"
